@@ -47,10 +47,10 @@ public class Schedule {
     @LastModifiedDate
     private LocalDateTime updateDate;
 
-    public Schedule(String username, String password, String title, String content) {
-        this.username = username;
-        this.password = password;
-        this.title = title;
-        this.content = content;
-    }
+//    public Schedule(String username, String password, String title, String content) {
+//        this.username = username;
+//        this.password = password;
+//        this.title = title;
+//        this.content = content;
+//    }
 }
