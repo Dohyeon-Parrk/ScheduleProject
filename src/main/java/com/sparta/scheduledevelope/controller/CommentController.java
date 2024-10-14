@@ -1,6 +1,7 @@
 package com.sparta.scheduledevelope.controller;
 
 import com.sparta.scheduledevelope.dto.comment.CommentRequestDto;
+import com.sparta.scheduledevelope.dto.comment.CommentResponseDto;
 import com.sparta.scheduledevelope.service.CommentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping("/{scheduleId}/comments")
-    public void createComment(@PathVariable Long scheduleId, @RequestBody CommentRequestDto requestDto){
-
+    public CommentResponseDto createComment(@PathVariable Long scheduleId, @RequestBody CommentRequestDto requestDto){
+        return commentService.createComment(scheduleId, requestDto);
     }
 }
