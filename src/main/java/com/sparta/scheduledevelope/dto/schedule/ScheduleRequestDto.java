@@ -1,4 +1,4 @@
-package com.sparta.scheduledevelope.dto;
+package com.sparta.scheduledevelope.dto.schedule;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

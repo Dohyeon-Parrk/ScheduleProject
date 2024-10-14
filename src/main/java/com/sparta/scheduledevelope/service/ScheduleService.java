@@ -1,7 +1,7 @@
 package com.sparta.scheduledevelope.service;
 
-import com.sparta.scheduledevelope.dto.ScheduleRequestDto;
-import com.sparta.scheduledevelope.dto.ScheduleResponseDto;
+import com.sparta.scheduledevelope.dto.schedule.ScheduleRequestDto;
+import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.entity.Schedule;
 import com.sparta.scheduledevelope.repository.ScheduleRepository;
 import lombok.extern.slf4j.Slf4j;

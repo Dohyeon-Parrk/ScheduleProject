@@ -1,7 +1,7 @@
 package com.sparta.scheduledevelope.controller;
 
-import com.sparta.scheduledevelope.dto.ScheduleRequestDto;
-import com.sparta.scheduledevelope.dto.ScheduleResponseDto;
+import com.sparta.scheduledevelope.dto.schedule.ScheduleRequestDto;
+import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.service.ScheduleService;
 import org.springframework.web.bind.annotation.*;
 
