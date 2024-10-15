@@ -2,6 +2,7 @@ package com.sparta.scheduledevelope.service;
 
 import com.sparta.scheduledevelope.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
+import com.sparta.scheduledevelope.dto.schedule.scheduleto.ScheduleToUserRequestDto;
 import com.sparta.scheduledevelope.entity.Schedule;
 import com.sparta.scheduledevelope.entity.User;
 import com.sparta.scheduledevelope.repository.ScheduleRepository;
@@ -120,6 +121,36 @@ public class ScheduleService {
     // 일정 페이징 조회
     public Page<ScheduleResponseDto> getSchedulePage(Pageable pageable) {
         return scheduleRepository.findAll(pageable).map(ScheduleResponseDto::new);
+    }
+
+    // 유저 배정
+    @Transactional
+    public ScheduleResponseDto userToSchedule(Long scheduleId, ScheduleToUserRequestDto requestDto) {
+
+        // 일정 조회
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 없습니다."));
+
+        // id 로 유저 ㅈ회
+        List<User> users = userRepository.findByIdIn(requestDto.getUserIds());
+
+        // 일정에 유저 배정
+        for (User user : users) {
+            schedule.getToSchedules().add(user);
+            user.getToUser().add(schedule);
+        }
+
+        scheduleRepository.save(schedule);
+        return new ScheduleResponseDto(schedule);
+    }
+
+    // 배정된 유저 목록 조회
+    @Transactional(readOnly = true)
+    public ScheduleResponseDto getUserSchedule(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 일정이 없습니다."));
+
+        return new ScheduleResponseDto(schedule);
     }
 }
 

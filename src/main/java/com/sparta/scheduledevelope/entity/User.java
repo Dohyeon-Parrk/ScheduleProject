@@ -45,6 +45,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Schedule> schedules = new ArrayList<>();
 
-    // 일정을 작성한 유저는 추가로 일정 담당 유저들을 배치할 수 있습니다.
-
+    // '일정을 작성한 유저는 추가로 일정 담당 유저들을 배치할 수 있습니다.' -> ManyToMany
+    @ManyToMany(mappedBy = "toSchedules", fetch = FetchType.LAZY)
+    private List<Schedule> toUser = new ArrayList<>();
 }

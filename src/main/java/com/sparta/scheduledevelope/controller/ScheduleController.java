@@ -2,6 +2,7 @@ package com.sparta.scheduledevelope.controller;
 
 import com.sparta.scheduledevelope.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
+import com.sparta.scheduledevelope.dto.schedule.scheduleto.ScheduleToUserRequestDto;
 import com.sparta.scheduledevelope.service.ScheduleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,5 +61,18 @@ public class ScheduleController {
                                                      @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
         return scheduleService.getSchedulePage(pageable);
+    }
+
+    // 유저 배정
+    @PostMapping("/tousers/{scheduleId}")
+    public ScheduleResponseDto userToSchedule(@PathVariable Long scheduleId,
+                                              @RequestBody ScheduleToUserRequestDto requestDto){
+        return scheduleService.userToSchedule(scheduleId, requestDto);
+    }
+
+    // 일정 및 배정 유저 조회
+    @GetMapping("/tousers/{scheduleId}")
+    public ScheduleResponseDto getUserSchedule(@PathVariable Long scheduleId){
+        return scheduleService.getUserSchedule(scheduleId);
     }
 }

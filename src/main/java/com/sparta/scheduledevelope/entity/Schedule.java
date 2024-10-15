@@ -60,4 +60,13 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    // 하나의 일정은 여러 담당 유저를 가질 수 있음 -> ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "schedule_to_user",      // 일정 담당 유저 테이블
+            joinColumns = @JoinColumn(name = "schedule_id"),    // 일정 테이블 FK
+            inverseJoinColumns = @JoinColumn(name = "user_id")  // 유저 테이블 FK
+    )
+    private List<User> toSchedules = new ArrayList<>();
 }
