@@ -22,9 +22,9 @@ public class ScheduleController {
     }
 
     // 일정 생성
-    @PostMapping()
-    public void createSchedule(@RequestBody ScheduleRequestDto requestDto) {
-        scheduleService.createSchedule(requestDto);
+    @PostMapping("/{userId}")
+    public ScheduleResponseDto createSchedule(@PathVariable Long userId, @RequestBody ScheduleRequestDto requestDto) {
+        return scheduleService.createSchedule(userId, requestDto);
     }
 
     // 전체 일정 조회

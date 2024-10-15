@@ -42,7 +42,7 @@ public class CommentService {
 
         Comment comment = new Comment();
 
-        comment.setAuthor(requestDto.getAuthor());
+        comment.setUsername(requestDto.getUsername());
 
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
@@ -59,13 +59,13 @@ public class CommentService {
     }
 
     // 해당 작성자의 댓글 조회 or 전체조회
-    public List<CommentResponseDto> getComments(Long scheduleId, String author) {
+    public List<CommentResponseDto> getComments(Long scheduleId, String username) {
         List<Comment> comments;
-        if (author != null && !author.isEmpty()) {
+        if (username != null && !username.isEmpty()) {
             // 작성자가 있을 경우 작성자의 댓글만 조회
-            comments = commentRepository.findCommentsByScheduleIdAndAuthor(scheduleId, author);
+            comments = commentRepository.findCommentsByScheduleIdAndUsername(scheduleId, username);
 
-            log.info(author + " 님의 댓글 조회 : " + comments.size() + "개");
+            log.info(username + " 님의 댓글 조회 : " + comments.size() + "개");
         } else {
             // 작성자가 없을 경우 해당 일정의 모든 댓글 조회
             comments = commentRepository.findByScheduleId(scheduleId);

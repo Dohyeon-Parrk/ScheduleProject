@@ -30,8 +30,10 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    // 일정은 이제 작성 유저명 필드 대신 유저 고유 식별자 필드를 가집니다.
+    // -> username 은 PK 가 아니기때문에 user 테이블의 user_id 를 FK 로 설정하여 사용
+//    @Column(nullable = false, unique = true)
+//    private String username;
 
     @Column(nullable = false)
     private String password;

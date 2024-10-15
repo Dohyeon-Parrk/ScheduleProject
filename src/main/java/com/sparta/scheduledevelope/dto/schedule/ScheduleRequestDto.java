@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ScheduleRequestDto {
-    private String username;
+//    private String username;
     private String password;
     private String title;
     private String content;

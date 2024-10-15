@@ -15,7 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByScheduleId(Long scheduleId);
 
     // 해당 작성자의 댓글 조회
-    @Query("select c from Comment c where c.schedule.id = :scheduleId and c.author = :author")
-    List<Comment> findCommentsByScheduleIdAndAuthor(@Param("scheduleId") Long scheduleId, @Param("author") String author);
+    @Query("select c from Comment c where c.schedule.id = :scheduleId and c.username = :username")
+    List<Comment> findCommentsByScheduleIdAndUsername(@Param("scheduleId") Long scheduleId, @Param("username") String username);
 
 }

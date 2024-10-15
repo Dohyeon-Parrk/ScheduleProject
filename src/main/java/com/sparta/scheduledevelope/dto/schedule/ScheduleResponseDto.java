@@ -13,7 +13,7 @@ public class ScheduleResponseDto {
 
     private Long id;
     private int commentCount;   // 댓글 개수
-    private String username;        // 유저네임
+//    private String username;        // 유저네임
     private String password;        // 비밀번호
     private String title;       // 제목
     private String content;     // 내용
@@ -23,7 +23,7 @@ public class ScheduleResponseDto {
     public ScheduleResponseDto(Schedule schedule){
         this.id = schedule.getId();
         this.commentCount = schedule.getComments().size();
-        this.username = schedule.getUsername();
+//        this.username = schedule.getUsername();
         this.password = schedule.getPassword();
         this.title = schedule.getTitle();
         this.content = schedule.getContent();

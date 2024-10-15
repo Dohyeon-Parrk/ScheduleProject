@@ -3,7 +3,9 @@ package com.sparta.scheduledevelope.service;
 import com.sparta.scheduledevelope.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.entity.Schedule;
+import com.sparta.scheduledevelope.entity.User;
 import com.sparta.scheduledevelope.repository.ScheduleRepository;
+import com.sparta.scheduledevelope.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,18 +22,27 @@ public class ScheduleService {
 
     private final PasswordEncoder passwordEncoder;
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, PasswordEncoder passwordEncoder) {
+    public ScheduleService(ScheduleRepository scheduleRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.scheduleRepository = scheduleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     // 일정 생성
     @Transactional
-    public void createSchedule(ScheduleRequestDto requestDto){
-        Schedule schedule = new Schedule();
+    public ScheduleResponseDto createSchedule(Long userId, ScheduleRequestDto requestDto){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. " + userId));
 
-        schedule.setUsername(requestDto.getUsername());
+//        schedule.setUsername(requestDto.getUsername());
+
+        if(requestDto.getPassword().length() > 10){
+            throw new IllegalArgumentException("일정 비밀번호는 최대 10자 이내여야 합니다.");
+        }
+
+        Schedule schedule = new Schedule();
 
         // 비밀번호 암호화
         String encodedPassword  = passwordEncoder.encode(requestDto.getPassword());
@@ -39,9 +50,14 @@ public class ScheduleService {
 
         schedule.setTitle(requestDto.getTitle());
         schedule.setContent(requestDto.getContent());
+
+        schedule.setUser(user);
+
         scheduleRepository.save(schedule);
 
         log.info("일정이 생성되었습니다 : " + schedule.getTitle());
+
+        return new ScheduleResponseDto(schedule);
     }
 
     // 일정 전체 조회
@@ -74,7 +90,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. password : ");
         }
 
-        schedule.setUsername(requestDto.getUsername());
+//        schedule.setUsername(requestDto.getUsername());
 
         String encodedPassword  = passwordEncoder.encode(requestDto.getPassword());
         schedule.setPassword(encodedPassword);

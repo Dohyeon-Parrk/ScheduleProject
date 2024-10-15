@@ -23,7 +23,7 @@ public class Comment {
     private Long id;
 
     @Column(nullable = false)
-    private String author;
+    private String username;
 
     @Column(nullable = false)
     private String password;

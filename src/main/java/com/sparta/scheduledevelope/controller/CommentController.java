@@ -25,8 +25,8 @@ public class CommentController {
 
     // 해당 작성자의 댓글 조회 or 전체조회
     @GetMapping("/{id}")
-    public List<CommentResponseDto> getComments(@PathVariable Long id, @RequestParam(required = false) String author){
-        return commentService.getComments(id, author);
+    public List<CommentResponseDto> getComments(@PathVariable Long id, @RequestParam(required = false) String username){
+        return commentService.getComments(id, username);
     }
 
     // 댓글 수정
