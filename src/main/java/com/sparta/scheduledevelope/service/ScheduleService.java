@@ -5,6 +5,8 @@ import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.entity.Schedule;
 import com.sparta.scheduledevelope.repository.ScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,6 +99,11 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
 
         log.info("일정이 삭제되었습니다 : " + schedule.getTitle());
+    }
+
+    // 일정 페이징 조회
+    public Page<ScheduleResponseDto> getSchedulePage(Pageable pageable) {
+        return scheduleRepository.findAll(pageable).map(ScheduleResponseDto::new);
     }
 }
 
