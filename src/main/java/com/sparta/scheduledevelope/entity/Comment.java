@@ -26,6 +26,9 @@ public class Comment {
     private String author;
 
     @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private String comment;
 
     @CreatedDate
