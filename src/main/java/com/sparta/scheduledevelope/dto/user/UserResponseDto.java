@@ -3,7 +3,6 @@ package com.sparta.scheduledevelope.dto.user;
 import com.sparta.scheduledevelope.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 

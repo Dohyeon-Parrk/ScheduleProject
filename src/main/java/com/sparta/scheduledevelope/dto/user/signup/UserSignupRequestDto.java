@@ -1,4 +1,4 @@
-package com.sparta.scheduledevelope.dto.user;
+package com.sparta.scheduledevelope.dto.user.signup;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserRequestDto {
+public class UserSignupRequestDto {
 
     @NotBlank(message = "유저명을 입력하세요.")
     @Size(min = 3, max = 10, message = "유저명은 3 ~ 10자 이내로 입력하세요.")

@@ -4,11 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginRequestDto {
+@NoArgsConstructor
+public class UserLoginRequestDto {
 
     @NotBlank(message = "이메일을 입력하세요.")
     @Email(message = "잘못된 이메일 형식입니다.")

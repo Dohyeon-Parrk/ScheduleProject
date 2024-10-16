@@ -1,6 +1,7 @@
 package com.sparta.scheduledevelope.filter;
 
 import com.sparta.scheduledevelope.entity.User;
+import com.sparta.scheduledevelope.entity.UserRoleEnum;
 import com.sparta.scheduledevelope.repository.UserRepository;
 import com.sparta.scheduledevelope.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -49,7 +50,7 @@ public class AuthFilter implements Filter {
                 return;
             }
 
-            // JWT 토큰 검증 및 사용자 정보 추출
+            // JWT 토큰 검증
             String token = tokenValue;
             if (!jwtUtil.validateToken(token)) {
                 log.error("유효하지 않은 JWT 토큰입니다.");
@@ -57,10 +58,17 @@ public class AuthFilter implements Filter {
                 return;
             }
 
-            // 토큰에서 사용자 정보 추출
+            // 토큰에서 사용자 정보 추출 및 권한 추출
             Claims userInfo = jwtUtil.getUserInfoFromToken(token);
             User user = (User) userRepository.findByUsername(userInfo.getSubject())
                     .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+            // 일정 수정 및 삭제 권한 체크 -> ADMIN 관리자만 가능
+            if (isScheduleHandleAuthorization(httpServletRequest) && user.getRole() != UserRoleEnum.ADMIN) {
+                log.error("권한이 없는 사용자입니다.");
+                httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "권한이 없습니다.");
+                return;
+            }
 
             // 사용자 정보를 요청 속성에 저장
             request.setAttribute("user", user);
@@ -70,12 +78,22 @@ public class AuthFilter implements Filter {
 
         } catch (Exception e) {
             log.error("인증 오류: {}", e.getMessage());
-            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증 오류가 발생했습니다" + e.getMessage());
         }
     }
 
     // 공개 API 경로 체크
     private boolean isPublicUrl(String url) {
-        return url.startsWith("/api/auth");
+        return url.startsWith("/api/user/signup") || url.startsWith("/api/user/login");
+    }
+
+    // 일정 수정 및 삭제 권한이 필요한 .URL
+    private boolean isScheduleHandleAuthorization(HttpServletRequest request) {
+        String url = request.getRequestURI();
+        String method = request.getMethod();
+
+        // 일정 수정 -> PUT /api/schedule/{id}
+        // 일정 삭제 -> DELETE /api/schedule/{id}
+        return (url.startsWith("/api/schedule/") && (method.equals("PUT") || method.equals("DELETE")));
     }
 }

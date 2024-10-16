@@ -1,8 +1,10 @@
 package com.sparta.scheduledevelope.controller;
 
-import com.sparta.scheduledevelope.dto.user.UserRequestDto;
 import com.sparta.scheduledevelope.dto.user.UserResponseDto;
-import com.sparta.scheduledevelope.dto.user.login.LoginRequestDto;
+import com.sparta.scheduledevelope.dto.user.delete.UserDeleteRequestDto;
+import com.sparta.scheduledevelope.dto.user.login.UserLoginRequestDto;
+import com.sparta.scheduledevelope.dto.user.signup.UserSignupRequestDto;
+import com.sparta.scheduledevelope.dto.user.update.UserUpdateRequestDto;
 import com.sparta.scheduledevelope.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +24,15 @@ public class UserController {
 
     // 회원 가입(유저 생성)
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody UserRequestDto requestDto){
-        String token = userService.signup(requestDto);  // 회원 가입 후 JWT 토큰 발급
+    public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequestDto userSignupRequestDto){
+        String token = userService.signup(userSignupRequestDto);  // 회원 가입 후 JWT 토큰 발급
         return ResponseEntity.ok(token);    // JWT 토큰 리턴
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto requestDto){
-        return userService.login(requestDto);
+    public ResponseEntity<String> login(@Valid @RequestBody UserLoginRequestDto userLoginRequestDto){
+        return userService.login(userLoginRequestDto);
     }
 
     // 모든 유저 조회
@@ -48,16 +50,15 @@ public class UserController {
     // 유저 수정
     @PutMapping("/{id}")
     public void updateUser(@PathVariable Long id,
-                           @RequestBody UserRequestDto requestDto,
-                           @RequestParam String password){
-        userService.updateUser(id, requestDto, password);
+                           @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+        userService.updateUser(id, userUpdateRequestDto);
     }
 
     // 유저 삭제
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id,
-                           @RequestParam String password){
-        userService.deleteUser(id, password);
+                           @Valid @RequestBody UserDeleteRequestDto userDeleteRequestDto){
+        userService.deleteUser(id, userDeleteRequestDto);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sparta.scheduledevelope.util;
 
+import com.sparta.scheduledevelope.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import java.util.Date;
 public class JwtUtil {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_KEY = "auth";  // 권한 저장
     public static final String BEARER_PREFIX = "Bearer ";
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
 
@@ -33,12 +35,13 @@ public class JwtUtil {
     }
 
     // JWT 토큰 생성
-    public String createToken(String username) {
+    public String createToken(String username, UserRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username)
+                        .claim(AUTHORIZATION_KEY, role)     // 권한 추가
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
@@ -74,5 +77,11 @@ public class JwtUtil {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    // JWT 토큰에서 권한 정보 추출
+    public UserRoleEnum getUserRoleFromToken(String token) {
+        Claims claims = getUserInfoFromToken(token);
+        return UserRoleEnum.valueOf(claims.get(AUTHORIZATION_KEY).toString());
     }
 }

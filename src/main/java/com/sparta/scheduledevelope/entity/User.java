@@ -48,4 +48,8 @@ public class User {
     // '일정을 작성한 유저는 추가로 일정 담당 유저들을 배치할 수 있습니다.' -> ManyToMany
     @ManyToMany(mappedBy = "toSchedules", fetch = FetchType.LAZY)
     private List<Schedule> toUser = new ArrayList<>();
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRoleEnum role;  // 권한
 }
