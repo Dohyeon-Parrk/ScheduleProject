@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,6 +90,7 @@ public class UserService {
     }
 
     // 유저 수정
+    @Transactional
     public void updateUser(Long id, UserUpdateRequestDto userUpdateRequestDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다. " + id));
@@ -110,6 +112,7 @@ public class UserService {
     }
 
     // 유저 삭제
+    @Transactional
     public void deleteUser(Long id, UserDeleteRequestDto userDeleteRequestDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다. : " + id));

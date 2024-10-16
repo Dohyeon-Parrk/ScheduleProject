@@ -31,8 +31,8 @@ public class CommentController {
 
     // 댓글 수정
     @PutMapping("/{id}")
-    public void updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @RequestParam String password){
-        commentService.updateComment(id, requestDto, password);
+    public void updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto){
+        commentService.updateComment(id, requestDto);
     }
 
     // 댓글 삭제

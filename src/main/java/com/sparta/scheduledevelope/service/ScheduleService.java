@@ -89,11 +89,11 @@ public class ScheduleService {
 
     // 일정 수정
     @Transactional
-    public void updateSchedule(Long id, ScheduleRequestDto requestDto, String inputPassword){
+    public void updateSchedule(Long id, ScheduleRequestDto requestDto){
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일정이 없습니다. ID :" + id));
 
-        if (!passwordEncoder.matches(inputPassword, schedule.getPassword())){
+        if (!passwordEncoder.matches(requestDto.getPassword(), schedule.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. password : ");
         }
 
@@ -104,6 +104,7 @@ public class ScheduleService {
 
         schedule.setTitle(requestDto.getTitle());
         schedule.setContent(requestDto.getContent());
+
         scheduleRepository.save(schedule);
 
         log.info("일정이 수정되었습니다 : " + schedule.getTitle());
@@ -111,11 +112,11 @@ public class ScheduleService {
 
     // 일정 삭제
     @Transactional
-    public void deleteSchedule(Long id, String inputPassword){
+    public void deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto){
         Schedule schedule = scheduleRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("해당 일정이 없습니다. ID :" + id));
 
-        if(!passwordEncoder.matches(inputPassword, schedule.getPassword())){
+        if(!passwordEncoder.matches(scheduleRequestDto.getPassword(), schedule.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. password : ");
         }
 

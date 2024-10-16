@@ -44,22 +44,21 @@ public class ScheduleController {
     // 일정 수정
     @PutMapping("/{id}")
     public void updateSchedule(@PathVariable Long id,
-                               @Valid @RequestBody ScheduleRequestDto requestDto,
-                               @RequestParam String password) {
-        scheduleService.updateSchedule(id, requestDto, password);
+                               @Valid @RequestBody ScheduleRequestDto requestDto) {
+        scheduleService.updateSchedule(id, requestDto);
     }
 
     // 일정 삭제
     @DeleteMapping("/{id}")
     public void deleteSchedule(@PathVariable Long id,
-                               @RequestParam String password) {
-        scheduleService.deleteSchedule(id, password);
+                               @Valid @RequestBody ScheduleRequestDto requestDto) {
+        scheduleService.deleteSchedule(id, requestDto);
     }
 
     // 일정 페이징 조회
     @GetMapping("/page")
-    public Page<ScheduleResponseDto> getSchedulePage(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
+    public Page<ScheduleResponseDto> getSchedulePage(@RequestParam(defaultValue = "0") int page,        // 페이지 번호
+                                                     @RequestParam(defaultValue = "10") int size) {     // 페이지 크기
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updateDate"));
         return scheduleService.getSchedulePage(pageable);
     }

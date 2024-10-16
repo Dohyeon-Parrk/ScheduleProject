@@ -79,11 +79,11 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public void updateComment(Long id, CommentRequestDto requestDto, String inputPassword) {
+    public void updateComment(Long id, CommentRequestDto requestDto) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다. " + id));
 
-        if(!passwordEncoder.matches(inputPassword, comment.getPassword())) {
+        if(!passwordEncoder.matches(requestDto.getPassword(), comment.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. ");
         }
 
