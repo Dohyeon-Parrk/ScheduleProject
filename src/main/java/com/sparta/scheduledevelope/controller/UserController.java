@@ -3,6 +3,8 @@ package com.sparta.scheduledevelope.controller;
 import com.sparta.scheduledevelope.dto.user.UserRequestDto;
 import com.sparta.scheduledevelope.dto.user.UserResponseDto;
 import com.sparta.scheduledevelope.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 유저 생성
-    @PostMapping()
-    public void createUser(@RequestBody UserRequestDto requestDto){
-        userService.createUser(requestDto);
+    // 회원 가입(유저 생성)
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@Valid @RequestBody UserRequestDto requestDto){
+        String token = userService.signup(requestDto);  // 회원 가입 후 JWT 토큰 발급
+        return ResponseEntity.ok(token);    // JWT 토큰 리턴
     }
 
     // 모든 유저 조회

@@ -4,6 +4,7 @@ import com.sparta.scheduledevelope.dto.user.UserRequestDto;
 import com.sparta.scheduledevelope.dto.user.UserResponseDto;
 import com.sparta.scheduledevelope.entity.User;
 import com.sparta.scheduledevelope.repository.UserRepository;
+import com.sparta.scheduledevelope.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,27 +19,29 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
-    // 유저 생성
-    @Transactional
-    public void createUser(UserRequestDto requestDto) {
-        User user = new User();
-
-        user.setUsername(requestDto.getUsername());
-
+    // 회원 가입(유저 생성)
+    public String signup(UserRequestDto requestDto){
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        user.setPassword(encodedPassword);
 
+        User user = new User();
+        user.setUsername(requestDto.getUsername());
+        user.setPassword(encodedPassword);
         user.setEmail(requestDto.getEmail());
 
         userRepository.save(user);
 
-        log.info("유저가 생성되었습니다. : " + user.getUsername());
+        log.info("회원 가입되었습니다. : " + user.getUsername());
+
+        // JWT 토큰 발급
+        return jwtUtil.createToken(user.getUsername());
     }
 
     // 전체 유저 조회
