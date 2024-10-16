@@ -24,11 +24,13 @@ public class ScheduleService {
     private final PasswordEncoder passwordEncoder;
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
+//    private final WeatherService weatherService;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, WeatherService weatherService) {
         this.scheduleRepository = scheduleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+//        this.weatherService = weatherService;
     }
 
     // 일정 생성
@@ -43,6 +45,9 @@ public class ScheduleService {
             throw new IllegalArgumentException("일정 비밀번호는 최대 10자 이내여야 합니다.");
         }
 
+        // 날씨 정보 조회
+//        String todayWeather = weatherService.getTodayWeather();
+
         Schedule schedule = new Schedule();
 
         // 비밀번호 암호화
@@ -51,6 +56,7 @@ public class ScheduleService {
 
         schedule.setTitle(requestDto.getTitle());
         schedule.setContent(requestDto.getContent());
+//        schedule.setWeather(todayWeather);
 
         schedule.setUser(user);
 

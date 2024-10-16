@@ -23,6 +23,7 @@ public class ScheduleResponseDto {
     private LocalDateTime createDate;    // 작성일자
     private LocalDateTime updateDate;    // 수정일자
     private List<String> toUserIds;     // 배정된 유저 아이디
+    private String weather;     // 날씨 정보
 
     public ScheduleResponseDto(Schedule schedule){
         this.id = schedule.getId();
@@ -37,5 +38,6 @@ public class ScheduleResponseDto {
                 .stream()
                 .map(User::getUsername)
                 .collect(Collectors.toList());
+        this.weather = schedule.getWeather();
     }
 }

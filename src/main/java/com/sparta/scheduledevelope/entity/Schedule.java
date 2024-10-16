@@ -46,6 +46,9 @@ public class Schedule {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String weather;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createDate;
