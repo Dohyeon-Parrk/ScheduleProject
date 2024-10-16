@@ -2,10 +2,13 @@ package com.sparta.scheduledevelope.service;
 
 import com.sparta.scheduledevelope.dto.user.UserRequestDto;
 import com.sparta.scheduledevelope.dto.user.UserResponseDto;
+import com.sparta.scheduledevelope.dto.user.login.LoginRequestDto;
 import com.sparta.scheduledevelope.entity.User;
 import com.sparta.scheduledevelope.repository.UserRepository;
 import com.sparta.scheduledevelope.util.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +45,22 @@ public class UserService {
 
         // JWT 토큰 발급
         return jwtUtil.createToken(user.getUsername());
+    }
+
+    // 로그인, Jwt 발급
+    public ResponseEntity<String> login(@Valid LoginRequestDto requestDto){
+        User user = userRepository.findByEmail(requestDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다. : " + requestDto.getEmail()));
+
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        log.info("로그인 성공 : " + user.getEmail());
+
+        // 로그인 성공 후, Jwt 발급
+        String token = jwtUtil.createToken(user.getEmail());
+        return ResponseEntity.ok(token);
     }
 
     // 전체 유저 조회

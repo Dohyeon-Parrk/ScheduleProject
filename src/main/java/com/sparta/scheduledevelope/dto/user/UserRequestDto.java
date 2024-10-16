@@ -13,7 +13,7 @@ import lombok.Setter;
 public class UserRequestDto {
 
     @NotBlank(message = "유저명을 입력하세요.")
-    @Size(max = 10, message = "유저명은 최대 10자 이내로 입력하세요.")
+    @Size(min = 3, max = 10, message = "유저명은 3 ~ 10자 이내로 입력하세요.")
     private String username;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
