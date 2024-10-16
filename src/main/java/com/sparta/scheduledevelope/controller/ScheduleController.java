@@ -4,6 +4,7 @@ import com.sparta.scheduledevelope.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.dto.schedule.scheduleto.ScheduleToUserRequestDto;
 import com.sparta.scheduledevelope.service.ScheduleService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class ScheduleController {
 
     // 일정 생성
     @PostMapping("/{userId}")
-    public ScheduleResponseDto createSchedule(@PathVariable Long userId, @RequestBody ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto createSchedule(@PathVariable Long userId, @Valid @RequestBody ScheduleRequestDto requestDto) {
         return scheduleService.createSchedule(userId, requestDto);
     }
 
@@ -43,7 +44,7 @@ public class ScheduleController {
     // 일정 수정
     @PutMapping("/{id}")
     public void updateSchedule(@PathVariable Long id,
-                               @RequestBody ScheduleRequestDto requestDto,
+                               @Valid @RequestBody ScheduleRequestDto requestDto,
                                @RequestParam String password) {
         scheduleService.updateSchedule(id, requestDto, password);
     }
