@@ -10,7 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -68,5 +70,5 @@ public class Schedule {
             joinColumns = @JoinColumn(name = "schedule_id"),    // 일정 테이블 FK
             inverseJoinColumns = @JoinColumn(name = "user_id")  // 유저 테이블 FK
     )
-    private List<User> toSchedules = new ArrayList<>();
+    private Set<User> toSchedules = new HashSet<>();
 }

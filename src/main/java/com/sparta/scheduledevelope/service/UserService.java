@@ -5,6 +5,7 @@ import com.sparta.scheduledevelope.dto.user.delete.UserDeleteRequestDto;
 import com.sparta.scheduledevelope.dto.user.login.UserLoginRequestDto;
 import com.sparta.scheduledevelope.dto.user.signup.UserSignupRequestDto;
 import com.sparta.scheduledevelope.dto.user.update.UserUpdateRequestDto;
+import com.sparta.scheduledevelope.entity.Schedule;
 import com.sparta.scheduledevelope.entity.User;
 import com.sparta.scheduledevelope.entity.UserRoleEnum;
 import com.sparta.scheduledevelope.repository.UserRepository;
@@ -33,7 +34,7 @@ public class UserService {
     }
 
     // 회원 가입(유저 생성)
-    public String signup(@Valid UserSignupRequestDto userSignupRequestDto){
+    public String signup(@Valid UserSignupRequestDto userSignupRequestDto) {
         String encodedPassword = passwordEncoder.encode(userSignupRequestDto.getPassword());
 
         User user = new User();
@@ -53,7 +54,7 @@ public class UserService {
     }
 
     // 로그인, Jwt 발급
-    public ResponseEntity<String> login(@Valid UserLoginRequestDto userLoginRequestDto){
+    public ResponseEntity<String> login(@Valid UserLoginRequestDto userLoginRequestDto) {
         User user = userRepository.findByEmail(userLoginRequestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다. : " + userLoginRequestDto.getEmail()));
 
@@ -92,7 +93,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다. " + id));
 
-        if(!passwordEncoder.matches(userUpdateRequestDto.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(userUpdateRequestDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. ");
         }
 
@@ -113,8 +114,13 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다. : " + id));
 
-        if(!passwordEncoder.matches(userDeleteRequestDto.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(userDeleteRequestDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 삭제 시, 배정된 일정에 유저가 포함 되어 있다면 해당 유저 정보도 삭제
+        for (Schedule schedule : user.getToUser()) {
+            schedule.getToSchedules().remove(user);
         }
 
         userRepository.delete(user);

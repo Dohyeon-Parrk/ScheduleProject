@@ -10,7 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -47,7 +49,7 @@ public class User {
 
     // '일정을 작성한 유저는 추가로 일정 담당 유저들을 배치할 수 있습니다.' -> ManyToMany
     @ManyToMany(mappedBy = "toSchedules", fetch = FetchType.LAZY)
-    private List<Schedule> toUser = new ArrayList<>();
+    private Set<Schedule> toUser = new HashSet<>();
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
