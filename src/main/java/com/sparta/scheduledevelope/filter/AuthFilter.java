@@ -87,13 +87,14 @@ public class AuthFilter implements Filter {
         return url.startsWith("/api/user/signup") || url.startsWith("/api/user/login");
     }
 
-    // 일정 수정 및 삭제 권한이 필요한 .URL
+    // 권한 부여 및 일정 수정, 삭제 권한이 필요한 .URL
     private boolean isScheduleHandleAuthorization(HttpServletRequest request) {
         String url = request.getRequestURI();
         String method = request.getMethod();
 
+        // 권한 부여 -> PUT /api/admin
         // 일정 수정 -> PUT /api/schedule/{id}
         // 일정 삭제 -> DELETE /api/schedule/{id}
-        return (url.startsWith("/api/schedule/") && (method.equals("PUT") || method.equals("DELETE")));
+        return (url.startsWith("/api/admin") && url.startsWith("/api/schedule/") && (method.equals("PUT") || method.equals("DELETE")));
     }
 }

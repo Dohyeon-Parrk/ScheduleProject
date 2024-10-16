@@ -121,4 +121,13 @@ public class UserService {
 
         log.info("유저 정보가 삭제되었습니다. : " + user.getUsername());
     }
+
+    // ADMIN 권한 부여
+    public void changeUserRole(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다. : " + id));
+
+        user.setRole(UserRoleEnum.ADMIN);
+        userRepository.save(user);
+    }
 }
