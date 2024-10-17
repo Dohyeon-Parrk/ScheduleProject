@@ -24,13 +24,13 @@ public class ScheduleService {
     private final PasswordEncoder passwordEncoder;
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
-//    private final WeatherService weatherService;
+    private final WeatherService weatherService;
 
     public ScheduleService(ScheduleRepository scheduleRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, WeatherService weatherService) {
         this.scheduleRepository = scheduleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-//        this.weatherService = weatherService;
+        this.weatherService = weatherService;
     }
 
     // 일정 생성
@@ -46,7 +46,7 @@ public class ScheduleService {
         }
 
         // 날씨 정보 조회
-//        String todayWeather = weatherService.getTodayWeather();
+        String todayWeather = weatherService.getTodayWeather();
 
         Schedule schedule = new Schedule();
 
@@ -56,7 +56,7 @@ public class ScheduleService {
 
         schedule.setTitle(requestDto.getTitle());
         schedule.setContent(requestDto.getContent());
-//        schedule.setWeather(todayWeather);
+        schedule.setWeather(todayWeather);
 
         schedule.setUser(user);
 
