@@ -1,6 +1,5 @@
-package com.sparta.scheduledevelope.domain.schedule.service;
+package com.sparta.scheduledevelope.external.api.weather;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;

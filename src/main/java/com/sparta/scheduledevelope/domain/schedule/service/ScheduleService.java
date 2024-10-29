@@ -4,9 +4,11 @@ import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleRequestD
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.scheduleto.ScheduleToUserRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.entity.Schedule;
-import com.sparta.scheduledevelope.domain.schedule.entity.User;
+import com.sparta.scheduledevelope.domain.user.entity.User;
 import com.sparta.scheduledevelope.domain.schedule.repository.ScheduleRepository;
-import com.sparta.scheduledevelope.domain.schedule.repository.UserRepository;
+import com.sparta.scheduledevelope.domain.user.repository.UserRepository;
+import com.sparta.scheduledevelope.external.api.weather.WeatherService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

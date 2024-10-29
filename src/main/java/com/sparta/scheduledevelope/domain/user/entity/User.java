@@ -1,4 +1,4 @@
-package com.sparta.scheduledevelope.domain.schedule.entity;
+package com.sparta.scheduledevelope.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.sparta.scheduledevelope.domain.schedule.entity.Schedule;
 
 @Entity
 @Getter

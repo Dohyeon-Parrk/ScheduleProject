@@ -1,4 +1,4 @@
-package com.sparta.scheduledevelope.domain.schedule.entity;
+package com.sparta.scheduledevelope.domain.user.entity;
 
 public enum UserRoleEnum {
     USER,   // 일반

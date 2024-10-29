@@ -1,11 +1,11 @@
-package com.sparta.scheduledevelope.domain.schedule.controller;
+package com.sparta.scheduledevelope.domain.user.controller;
 
-import com.sparta.scheduledevelope.domain.schedule.dto.user.UserResponseDto;
-import com.sparta.scheduledevelope.domain.schedule.dto.user.delete.UserDeleteRequestDto;
-import com.sparta.scheduledevelope.domain.schedule.dto.user.login.UserLoginRequestDto;
-import com.sparta.scheduledevelope.domain.schedule.dto.user.signup.UserSignupRequestDto;
-import com.sparta.scheduledevelope.domain.schedule.dto.user.update.UserUpdateRequestDto;
-import com.sparta.scheduledevelope.domain.schedule.service.UserService;
+import com.sparta.scheduledevelope.domain.user.dto.user.UserResponseDto;
+import com.sparta.scheduledevelope.domain.user.dto.user.delete.UserDeleteRequestDto;
+import com.sparta.scheduledevelope.domain.user.dto.user.login.UserLoginRequestDto;
+import com.sparta.scheduledevelope.domain.user.dto.user.signup.UserSignupRequestDto;
+import com.sparta.scheduledevelope.domain.user.dto.user.update.UserUpdateRequestDto;
+import com.sparta.scheduledevelope.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

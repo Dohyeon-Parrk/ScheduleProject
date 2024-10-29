@@ -1,4 +1,4 @@
-package com.sparta.scheduledevelope.domain.schedule.dto.user.delete;
+package com.sparta.scheduledevelope.domain.user.dto.user.delete;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

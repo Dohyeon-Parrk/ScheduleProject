@@ -1,6 +1,6 @@
-package com.sparta.scheduledevelope.domain.schedule.repository;
+package com.sparta.scheduledevelope.domain.user.repository;
 
-import com.sparta.scheduledevelope.domain.schedule.entity.User;
+import com.sparta.scheduledevelope.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

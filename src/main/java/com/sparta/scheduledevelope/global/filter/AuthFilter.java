@@ -1,8 +1,8 @@
 package com.sparta.scheduledevelope.global.filter;
 
-import com.sparta.scheduledevelope.domain.schedule.entity.User;
-import com.sparta.scheduledevelope.domain.schedule.entity.UserRoleEnum;
-import com.sparta.scheduledevelope.domain.schedule.repository.UserRepository;
+import com.sparta.scheduledevelope.domain.user.entity.User;
+import com.sparta.scheduledevelope.domain.user.entity.UserRoleEnum;
+import com.sparta.scheduledevelope.domain.user.repository.UserRepository;
 import com.sparta.scheduledevelope.common.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;

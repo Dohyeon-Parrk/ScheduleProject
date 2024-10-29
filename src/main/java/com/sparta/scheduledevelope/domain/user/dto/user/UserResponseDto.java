@@ -1,6 +1,6 @@
-package com.sparta.scheduledevelope.domain.schedule.dto.user;
+package com.sparta.scheduledevelope.domain.user.dto.user;
 
-import com.sparta.scheduledevelope.domain.schedule.entity.User;
+import com.sparta.scheduledevelope.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

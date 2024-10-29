@@ -1,6 +1,6 @@
 package com.sparta.scheduledevelope.common.util;
 
-import com.sparta.scheduledevelope.domain.schedule.entity.UserRoleEnum;
+import com.sparta.scheduledevelope.domain.user.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;

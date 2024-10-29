@@ -1,6 +1,6 @@
-package com.sparta.scheduledevelope.domain.schedule.controller;
+package com.sparta.scheduledevelope.domain.user.controller;
 
-import com.sparta.scheduledevelope.domain.schedule.service.UserService;
+import com.sparta.scheduledevelope.domain.user.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
