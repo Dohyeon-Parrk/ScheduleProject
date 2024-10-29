@@ -1,14 +1,18 @@
 package com.sparta.scheduledevelope.domain.schedule.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentResponseDto;
 import com.sparta.scheduledevelope.domain.schedule.service.CommentService;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +41,7 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/{commentId")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long scheduleId, @PathVariable Long commentId){
         commentService.deleteComment(scheduleId, commentId);
         return ResponseEntity

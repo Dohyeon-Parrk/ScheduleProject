@@ -3,6 +3,7 @@ package com.sparta.scheduledevelope.domain.schedule.entity;
 import com.sparta.scheduledevelope.common.entity.TimeStamp;
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentResponseDto;
+import com.sparta.scheduledevelope.domain.user.entity.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,35 +25,35 @@ public class Comment extends TimeStamp {
     @Column
     private String comment;
 
-    @Column
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
-    public static Comment from(CommentRequestDto commentRequestDto, Schedule schedule) {
+    public static Comment from(CommentRequestDto commentRequestDto, Schedule schedule, Member member) {
         Comment comment = new Comment();
-        comment.initDate(commentRequestDto, schedule);
+        comment.initDate(commentRequestDto, schedule, member);
         return comment;
     }
 
-    private void initDate(CommentRequestDto commentRequestDto, Schedule schedule) {
+    private void initDate(CommentRequestDto commentRequestDto, Schedule schedule, Member member) {
         this.comment = commentRequestDto.getComment();
-        this.username = commentRequestDto.getUsername();
+        this.member = member;
         this.schedule = schedule;
-    }
-
-    public void updateDate(CommentRequestDto commentRequestDto){
-        this.comment = commentRequestDto.getComment();
-        this.username = commentRequestDto.getUsername();
     }
 
     public CommentResponseDto to() {
         return new CommentResponseDto(
             this.id,
             this.comment,
-            this.username
+            this.member.getMembername()
         );
+    }
+
+    public void updateDate(CommentRequestDto commentRequestDto){
+        this.comment = commentRequestDto.getComment();
     }
 }

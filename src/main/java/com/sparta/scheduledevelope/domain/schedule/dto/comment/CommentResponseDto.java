@@ -9,6 +9,6 @@ public class CommentResponseDto {
 
     private Long id;
     private String comment;
-    private String username;
+    private String membername;
 
 }

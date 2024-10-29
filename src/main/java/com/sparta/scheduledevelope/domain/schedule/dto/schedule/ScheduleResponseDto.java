@@ -13,7 +13,7 @@ import lombok.Getter;
 public class ScheduleResponseDto {
 
     private Long id;
-    private String username;
+    private String membername;
     private String title;
     private String content;
     private List<CommentResponseDto> comments;

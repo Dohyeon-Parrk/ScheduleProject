@@ -15,6 +15,8 @@ import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponse
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponsePage;
 import com.sparta.scheduledevelope.domain.schedule.entity.Schedule;
 import com.sparta.scheduledevelope.domain.schedule.repository.ScheduleRepository;
+import com.sparta.scheduledevelope.domain.user.entity.Member;
+import com.sparta.scheduledevelope.domain.user.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,18 +27,24 @@ import lombok.extern.slf4j.Slf4j;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final MemberRepository memberRepository;
 
     // 일정 생성
     @Transactional
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
-        Schedule schedule = scheduleRepository.save(Schedule.from(scheduleRequestDto));
+        Member member = memberRepository.findById(scheduleRequestDto.getMemberId())
+            .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다." + scheduleRequestDto.getMemberId()));
+
+        Schedule schedule = scheduleRepository.save(Schedule.from(scheduleRequestDto, member));
+
         return schedule.to();
     }
 
     // 일정 전체 조회
     public List<ScheduleResponseDto> getScheduleList() {
-        List<Schedule> scheduleList = scheduleRepository.findAll();
-        return scheduleList.stream()
+        List<Schedule> schedules = scheduleRepository.findAll();
+
+        return schedules.stream()
             .map(Schedule::to)
             .collect(Collectors.toList());
     }
@@ -69,7 +77,17 @@ public class ScheduleService {
     public ScheduleResponsePage getScheduleListPaging(int page, int size, String criteria){
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, criteria));
         Page<Schedule> schedules = scheduleRepository.findAll(pageable);
+
         return new ScheduleResponsePage(schedules);
+    }
+
+    // 일정에 유저 배정
+    @Transactional
+    public void assignMember(Long memberId, Long scheduleId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다." + memberId));
+        Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+        schedule.addMember(member);
     }
 }
 

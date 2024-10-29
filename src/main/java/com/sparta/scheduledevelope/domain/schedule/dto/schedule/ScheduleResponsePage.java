@@ -12,9 +12,9 @@ import lombok.Getter;
 @Getter
 public class ScheduleResponsePage {
 
-	private List<ScheduleResponseDto> schedules;
-	private int totalPages;
-	private long totalElements;
+	private final List<ScheduleResponseDto> schedules;
+	private final int totalPages;
+	private final long totalElements;
 
 	public ScheduleResponsePage(Page<Schedule> page){
 		this.schedules = page.getContent().stream()

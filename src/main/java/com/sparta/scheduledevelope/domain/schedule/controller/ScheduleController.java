@@ -39,9 +39,10 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponsePage> getScheduleList(@RequestParam(required = false, defaultValue = "0") int page,
         @RequestParam(required = false, defaultValue = "10") int size,
         @RequestParam(required = false, defaultValue = "modifiedAt") String criteria) {
+
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(scheduleService.getScheduleListPaging(page,size, criteria));
+            .body(scheduleService.getScheduleListPaging(page, size, criteria));
     }
 
     // 일정 단건 조회
@@ -53,7 +54,7 @@ public class ScheduleController {
     }
 
     // 일정 수정
-    @PutMapping("/{scheduleId")
+    @PutMapping("/{scheduleId}")
     public ResponseEntity<Void> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleRequestDto scheduleRequestDto) {
         scheduleService.updateSchedule(scheduleId, scheduleRequestDto);
         return ResponseEntity
@@ -65,6 +66,15 @@ public class ScheduleController {
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId){
         scheduleService.deleteSchedule(scheduleId);
+        return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .build();
+    }
+
+    // 일정에 유저 배정
+    @PostMapping("/{scheduleId}/assign/{memberId}")
+    public ResponseEntity<Void> assignUserToSchedule(@PathVariable Long memberId, @PathVariable Long scheduleId) {
+        scheduleService.assignMember(memberId, scheduleId);
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .build();
