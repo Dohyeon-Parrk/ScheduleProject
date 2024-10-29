@@ -3,11 +3,16 @@ package com.sparta.scheduledevelope.domain.schedule.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponseDto;
+import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponsePage;
 import com.sparta.scheduledevelope.domain.schedule.entity.Schedule;
 import com.sparta.scheduledevelope.domain.schedule.repository.ScheduleRepository;
 
@@ -58,6 +63,13 @@ public class ScheduleService {
     public void deleteSchedule(Long scheduleId){
         scheduleRepository.findScheduleById(scheduleId);
         scheduleRepository.deleteById(scheduleId);
+    }
+
+    // 페이징
+    public ScheduleResponsePage getScheduleListPaging(int page, int size, String criteria){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, criteria));
+        Page<Schedule> schedules = scheduleRepository.findAll(pageable);
+        return new ScheduleResponsePage(schedules);
     }
 }
 

@@ -1,15 +1,19 @@
 package com.sparta.scheduledevelope.domain.schedule.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sparta.scheduledevelope.common.entity.TimeStamp;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponseDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -28,6 +32,9 @@ public class Schedule extends TimeStamp {
 
     @Column
     private String content;
+
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
 
     public static Schedule from(ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = new Schedule();
@@ -53,6 +60,7 @@ public class Schedule extends TimeStamp {
             username,
             title,
             content,
+            comments.stream().map(Comment::to).toList(),
             getCreatedAt(),
             getModifiedAt()
         );
