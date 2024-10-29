@@ -36,7 +36,6 @@ public class AuthService {
 	public void signUp(AuthRequestDto authRequestDto, HttpServletResponse httpServletResponse) {
 		validateEmail(authRequestDto.getEmail());
 
-		authRequestDto.initPassword(passwordEncoder.encode(authRequestDto.getPassword()));
 		Optional<Member> checkMember = memberRepository.findByEmail(authRequestDto.getEmail());
 
 		if(checkMember.isPresent()){
@@ -45,20 +44,17 @@ public class AuthService {
 
 		UserRoleEnum role = UserRoleEnum.getRole(authRequestDto.isAdmin());
 		Member signUpMember = Member.from(authRequestDto, role);
-
 		Member savedUser = memberRepository.save(signUpMember);
 
 		String token = jwtUtil.createToken(savedUser.getEmail(), savedUser.getRole());
 		jwtUtil.addJwtToCookie(token, httpServletResponse);
 	}
 
-	public void login(AuthRequestDto requestDto, HttpServletResponse response) {
-		Member checkMember = memberRepository.findByEmail(requestDto.getEmail())
+	public void login(AuthRequestDto authRequestDto, HttpServletResponse response) {
+		Member checkMember = memberRepository.findByEmail(authRequestDto.getEmail())
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 사용자가 없습니다."));
 
-		if(!passwordEncoder.matches(requestDto.getPassword(), checkMember.getPassword())){
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
-		}
+		checkMember.validatePassword(authRequestDto.getPassword(), passwordEncoder);
 
 		String token = jwtUtil.createToken(checkMember.getEmail(), checkMember.getRole());
 		jwtUtil.addJwtToCookie(token, response);

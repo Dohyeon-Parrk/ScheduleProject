@@ -21,9 +21,7 @@ public class MemberService {
 	// 유저 생성
 	@Transactional
 	public MemberResponseDto createMember(MemberRequestDto memberRequestDto) {
-		if(memberRepository.findByEmail(memberRequestDto.getEmail()).isPresent()){
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "중복된 이메일입니다.");
-		}
+		Member.validateEmailDuplication(memberRepository, memberRequestDto.getEmail());
 
 		Member member = Member.from(memberRequestDto);
 		Member savedMember = memberRepository.save(member);
