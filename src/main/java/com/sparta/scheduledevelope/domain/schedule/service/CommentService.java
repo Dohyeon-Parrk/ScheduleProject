@@ -1,7 +1,9 @@
 package com.sparta.scheduledevelope.domain.schedule.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentResponseDto;
@@ -29,7 +31,7 @@ public class CommentService {
         Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
 
         Member member = memberRepository.findById(commentRequestDto.getMemberId())
-            .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다." + commentRequestDto.getMemberId()));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다." + commentRequestDto.getMemberId()));
 
         Comment comment = Comment.from(commentRequestDto, schedule, member);
         Comment savedComment = commentRepository.save(comment);

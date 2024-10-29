@@ -1,7 +1,9 @@
 package com.sparta.scheduledevelope.domain.user.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.scheduledevelope.domain.user.dto.member.MemberRequestDto;
 import com.sparta.scheduledevelope.domain.user.dto.member.MemberResponseDto;
@@ -28,7 +30,7 @@ public class MemberService {
 	// 유저 조회
 	public MemberResponseDto getMember(Long memberId) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다." + memberId));
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
 
 		return member.to();
 	}
@@ -37,7 +39,7 @@ public class MemberService {
 	@Transactional
 	public void updateMember(MemberRequestDto memberRequestDto, Long memberId) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다." + memberId));
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
 
 		member.updateDate(memberRequestDto);
 	}
@@ -46,7 +48,7 @@ public class MemberService {
 	@Transactional
 	public void deleteMember(Long memberId) {
 		memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다." + memberId));
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
 
 		memberRepository.deleteById(memberId);
 	}

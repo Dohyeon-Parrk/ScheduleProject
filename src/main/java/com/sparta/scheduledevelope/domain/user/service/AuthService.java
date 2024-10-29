@@ -2,8 +2,10 @@ package com.sparta.scheduledevelope.domain.user.service;
 
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.scheduledevelope.common.auth.JwtUtil;
 import com.sparta.scheduledevelope.common.auth.PasswordEncoder;
@@ -29,8 +31,8 @@ public class AuthService {
 		authRequestDto.initPassword(passwordEncoder.encode(authRequestDto.getPassword()));
 		Optional<Member> checkMember = memberRepository.findByEmail(authRequestDto.getEmail());
 
-		if(!checkMember.isEmpty()){
-			throw new IllegalArgumentException("중복된 email 입니다.");
+		if(checkMember.isPresent()){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,  "중복된 email 입니다.");
 		}
 
 		UserRoleEnum role = UserRoleEnum.getRole(authRequestDto.isAdmin());
@@ -43,10 +45,11 @@ public class AuthService {
 	}
 
 	public void login(AuthRequestDto requestDto, HttpServletResponse response) {
-		Member checkMember = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+		Member checkMember = memberRepository.findByEmail(requestDto.getEmail())
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "등록된 사용자가 없습니다."));
 
 		if(!passwordEncoder.matches(requestDto.getPassword(), checkMember.getPassword())){
-			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
 		}
 
 		String token = jwtUtil.createToken(checkMember.getEmail(), checkMember.getRole());

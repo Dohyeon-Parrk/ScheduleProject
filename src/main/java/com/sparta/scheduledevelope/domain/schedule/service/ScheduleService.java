@@ -7,8 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponseDto;
@@ -52,7 +54,7 @@ public class ScheduleService {
     // 일정 단건 조회
     public ScheduleResponseDto getSchedule(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
-            .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다. : " + scheduleId));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
 
         log.info("선택한 일정 조회 : " + scheduleId);
 
@@ -85,7 +87,7 @@ public class ScheduleService {
     @Transactional
     public void assignMember(Long memberId, Long scheduleId) {
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다." + memberId));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
         Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
         schedule.addMember(member);
     }
