@@ -10,12 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-
-    // 전체 댓글 조회
-    List<Comment> findByScheduleId(Long scheduleId);
-
-    // 해당 작성자의 댓글 조회
-    @Query("select c from Comment c where c.schedule.id = :scheduleId and c.username = :username")
-    List<Comment> findCommentsByScheduleIdAndUsername(@Param("scheduleId") Long scheduleId, @Param("username") String username);
-
+    default Comment findCommentById(Long id) {
+        return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다." + id));
+    }
 }

@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "schedule")
 public class Schedule extends TimeStamp {
 
     @Id
