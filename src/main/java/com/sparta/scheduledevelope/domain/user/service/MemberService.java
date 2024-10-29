@@ -3,8 +3,8 @@ package com.sparta.scheduledevelope.domain.user.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sparta.scheduledevelope.domain.user.dto.MemberRequestDto;
-import com.sparta.scheduledevelope.domain.user.dto.MemberResponseDto;
+import com.sparta.scheduledevelope.domain.user.dto.member.MemberRequestDto;
+import com.sparta.scheduledevelope.domain.user.dto.member.MemberResponseDto;
 import com.sparta.scheduledevelope.domain.user.entity.Member;
 import com.sparta.scheduledevelope.domain.user.repository.MemberRepository;
 
@@ -22,7 +22,7 @@ public class MemberService {
 		Member member = Member.from(memberRequestDto);
 		Member savedMember = memberRepository.save(member);
 
-		return savedMember.to();
+		return member.to();
 	}
 
 	// 유저 조회

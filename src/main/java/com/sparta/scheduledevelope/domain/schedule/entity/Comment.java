@@ -35,11 +35,11 @@ public class Comment extends TimeStamp {
 
     public static Comment from(CommentRequestDto commentRequestDto, Schedule schedule, Member member) {
         Comment comment = new Comment();
-        comment.initDate(commentRequestDto, schedule, member);
+        comment.initData(commentRequestDto, schedule, member);
         return comment;
     }
 
-    private void initDate(CommentRequestDto commentRequestDto, Schedule schedule, Member member) {
+    private void initData(CommentRequestDto commentRequestDto, Schedule schedule, Member member) {
         this.comment = commentRequestDto.getComment();
         this.member = member;
         this.schedule = schedule;

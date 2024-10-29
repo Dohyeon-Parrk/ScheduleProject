@@ -1,4 +1,4 @@
-package com.sparta.scheduledevelope.domain.user.dto;
+package com.sparta.scheduledevelope.domain.user.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

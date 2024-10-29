@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sparta.scheduledevelope.domain.user.dto.MemberRequestDto;
-import com.sparta.scheduledevelope.domain.user.dto.MemberResponseDto;
+import com.sparta.scheduledevelope.domain.user.dto.member.MemberRequestDto;
+import com.sparta.scheduledevelope.domain.user.dto.member.MemberResponseDto;
 import com.sparta.scheduledevelope.domain.user.service.MemberService;
 
 import jakarta.validation.Valid;

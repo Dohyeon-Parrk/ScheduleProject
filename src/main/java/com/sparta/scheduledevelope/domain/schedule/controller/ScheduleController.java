@@ -16,7 +16,9 @@ import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleRequestD
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponseDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponsePage;
 import com.sparta.scheduledevelope.domain.schedule.service.ScheduleService;
+import com.sparta.scheduledevelope.domain.user.entity.Member;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -56,7 +58,13 @@ public class ScheduleController {
 
     // 일정 수정
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<Void> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<Void> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleRequestDto scheduleRequestDto, HttpServletRequest httpServletRequest) {
+        Member member = (Member) httpServletRequest.getAttribute("member");
+
+        if(member.isUser()){
+            throw new IllegalArgumentException("권한이 없습니다.(ADMIN 권한 가능)");
+        }
+
         scheduleService.updateSchedule(scheduleId, scheduleRequestDto);
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
