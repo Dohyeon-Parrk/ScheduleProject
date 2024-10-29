@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.scheduledevelope.common.auth.JwtUtil;
@@ -25,8 +26,15 @@ public class AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtUtil jwtUtil;
 
+	private void validateEmail(String email) {
+		if(!StringUtils.hasText(email) || !email.contains("@")){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "유효하지 않은 이메일 형식입니다.");
+		}
+	}
+
 	@Transactional
 	public void signUp(AuthRequestDto authRequestDto, HttpServletResponse httpServletResponse) {
+		validateEmail(authRequestDto.getEmail());
 
 		authRequestDto.initPassword(passwordEncoder.encode(authRequestDto.getPassword()));
 		Optional<Member> checkMember = memberRepository.findByEmail(authRequestDto.getEmail());

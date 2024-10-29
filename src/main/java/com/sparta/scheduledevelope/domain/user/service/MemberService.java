@@ -21,16 +21,20 @@ public class MemberService {
 	// 유저 생성
 	@Transactional
 	public MemberResponseDto createMember(MemberRequestDto memberRequestDto) {
+		if(memberRepository.findByEmail(memberRequestDto.getEmail()).isPresent()){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "중복된 이메일입니다.");
+		}
+
 		Member member = Member.from(memberRequestDto);
 		Member savedMember = memberRepository.save(member);
 
-		return member.to();
+		return savedMember.to();
 	}
 
 	// 유저 조회
 	public MemberResponseDto getMember(Long memberId) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다." + memberId));
 
 		return member.to();
 	}
@@ -39,7 +43,7 @@ public class MemberService {
 	@Transactional
 	public void updateMember(MemberRequestDto memberRequestDto, Long memberId) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다." + memberId));
 
 		member.updateDate(memberRequestDto);
 	}
@@ -48,7 +52,7 @@ public class MemberService {
 	@Transactional
 	public void deleteMember(Long memberId) {
 		memberRepository.findById(memberId)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다." + memberId));
 
 		memberRepository.deleteById(memberId);
 	}

@@ -28,10 +28,11 @@ public class CommentService {
     // 댓글 생성
     @Transactional
     public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long scheduleId){
-        Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
 
         Member member = memberRepository.findById(commentRequestDto.getMemberId())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다." + commentRequestDto.getMemberId()));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다." + commentRequestDto.getMemberId()));
 
         Comment comment = Comment.from(commentRequestDto, schedule, member);
         Comment savedComment = commentRepository.save(comment);
@@ -42,16 +43,24 @@ public class CommentService {
     // 댓글 수정
     @Transactional
     public void updateComment(CommentRequestDto commentRequestDto, Long scheduleId, Long commentId){
-        scheduleRepository.findScheduleById(scheduleId);
-        Comment comment = commentRepository.findCommentById(commentId);
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
+
+        Comment comment = commentRepository.findById(commentId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없습니다. : " + commentId));
+
         comment.updateDate(commentRequestDto);
     }
 
     // 댓글 삭제
     @Transactional
     public void deleteComment(Long scheduleId, Long commentId){
-        scheduleRepository.findScheduleById(scheduleId);
-        commentRepository.findCommentById(commentId);
-        commentRepository.deleteById(commentId);
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. ID: " + scheduleId));
+
+        Comment comment = commentRepository.findById(commentId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 댓글을 찾을 수 없습니다. ID: " + commentId));
+
+        commentRepository.delete(comment);
     }
 }

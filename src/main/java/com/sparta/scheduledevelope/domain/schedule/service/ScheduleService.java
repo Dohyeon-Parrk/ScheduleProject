@@ -35,7 +35,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto) {
         Member member = memberRepository.findById(scheduleRequestDto.getMemberId())
-            .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다." + scheduleRequestDto.getMemberId()));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다." + scheduleRequestDto.getMemberId()));
 
         Schedule schedule = scheduleRepository.save(Schedule.from(scheduleRequestDto, member));
 
@@ -56,23 +56,23 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(scheduleId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
 
-        log.info("선택한 일정 조회 : " + scheduleId);
-
         return schedule.to();
     }
 
     // 일정 수정
     @Transactional
     public void updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto) {
-        Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
         schedule.updateDate(scheduleRequestDto);
     }
 
     // 일정 삭제
     @Transactional
     public void deleteSchedule(Long scheduleId){
-        scheduleRepository.findScheduleById(scheduleId);
-        scheduleRepository.deleteById(scheduleId);
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
+        scheduleRepository.delete(schedule);
     }
 
     // 페이징
@@ -87,8 +87,9 @@ public class ScheduleService {
     @Transactional
     public void assignMember(Long memberId, Long scheduleId) {
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 유저를 찾을 수 없습니다." + memberId));
-        Schedule schedule = scheduleRepository.findScheduleById(scheduleId);
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다. : " + memberId));
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다. : " + scheduleId));
         schedule.addMember(member);
     }
 }

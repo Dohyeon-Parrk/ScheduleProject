@@ -7,8 +7,5 @@ import com.sparta.scheduledevelope.domain.schedule.entity.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    default Comment findCommentById(Long id) {
-        return findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다." + id));
-    }
+
 }
