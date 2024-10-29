@@ -14,6 +14,7 @@ import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentRequestDto
 import com.sparta.scheduledevelope.domain.schedule.dto.comment.CommentResponseDto;
 import com.sparta.scheduledevelope.domain.schedule.service.CommentService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,7 +26,7 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping()
-    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long scheduleId, @RequestBody CommentRequestDto commentRequestDto){
+    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long scheduleId, @RequestBody @Valid CommentRequestDto commentRequestDto){
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(commentService.createComment(commentRequestDto, scheduleId));

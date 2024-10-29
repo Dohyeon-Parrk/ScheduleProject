@@ -15,6 +15,7 @@ import com.sparta.scheduledevelope.domain.user.dto.MemberRequestDto;
 import com.sparta.scheduledevelope.domain.user.dto.MemberResponseDto;
 import com.sparta.scheduledevelope.domain.user.service.MemberService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,7 +27,7 @@ public class MemberController {
 
 	// 유저 생성
 	@PostMapping()
-	public ResponseEntity<MemberResponseDto> createMember(@RequestBody MemberRequestDto memberRequestDto) {
+	public ResponseEntity<MemberResponseDto> createMember(@RequestBody @Valid MemberRequestDto memberRequestDto) {
 		return ResponseEntity
 			.status(HttpStatus.CREATED)
 			.body(memberService.createMember(memberRequestDto));

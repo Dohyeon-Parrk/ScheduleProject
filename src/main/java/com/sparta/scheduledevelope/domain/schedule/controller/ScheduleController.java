@@ -17,6 +17,7 @@ import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponse
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponsePage;
 import com.sparta.scheduledevelope.domain.schedule.service.ScheduleService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,7 +29,7 @@ public class ScheduleController {
 
     // 일정 생성
     @PostMapping()
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody @Valid ScheduleRequestDto scheduleRequestDto) {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(scheduleService.createSchedule(scheduleRequestDto));
