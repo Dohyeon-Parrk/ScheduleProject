@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponseDto;
+import com.sparta.scheduledevelope.domain.schedule.dto.schedule.ScheduleResponsePage;
 import com.sparta.scheduledevelope.domain.schedule.service.ScheduleService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,10 +36,12 @@ public class ScheduleController {
 
     // 일정 전체 조회
     @GetMapping()
-    public ResponseEntity<ScheduleResponseDto> getScheduleList() {
+    public ResponseEntity<ScheduleResponsePage> getScheduleList(@RequestParam(required = false, defaultValue = "0") int page,
+        @RequestParam(required = false, defaultValue = "10") int size,
+        @RequestParam(required = false, defaultValue = "modifiedAt") String criteria) {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body((ScheduleResponseDto)scheduleService.getScheduleList());
+            .body(scheduleService.getScheduleListPaging(page,size, criteria));
     }
 
     // 일정 단건 조회
