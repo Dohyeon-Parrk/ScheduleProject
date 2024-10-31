@@ -15,7 +15,7 @@
 - ### [포스트맨 ScheduleProject API 명세서 (Click)](https://documenter.getpostman.com/view/23971624/2sAXxV5V3N)
 
 ## <span style="color: pink">  ERD 설계
-![img_1.png](img_1.png)
+![img_2.png](img_2.png)
 
 ## <span style="color: pink"> 개요 (Overview)
 일정 관리 어플리케이션은 사용자가 일정을 등록, 수정, 삭제할 수 있으며, 등록된 일정을 조건별로 필터링하고 검색할 수 있는 기능을 제공합니다.
